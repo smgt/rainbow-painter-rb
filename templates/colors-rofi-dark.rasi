@@ -1,6 +1,6 @@
 * {
   background-color: <%= background.hex %>;
-  border-color: <%= backgroundalt.hex %>;
+  border-color: <%= foreground.hex %>;
   text-color: <%= foreground.hex %>;
   active-color: <%= color5.hex %>;
   selected-color: <%= color6.hex %>;
