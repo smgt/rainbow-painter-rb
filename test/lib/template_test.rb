@@ -14,8 +14,8 @@ class TemplateTest < Minitest::Test
   end
 
   def test_template_file_not_found
-    assert_raises(RainbowPainter::Template::FileNotFound) {
-      RainbowPainter::Template.new(palette: RainbowPainter::Palette.new({}), template_path: "foobar")
-    }
+    assert_raises(RainbowPainter::Template::FileNotFound) do
+      RainbowPainter::Template.new(palette: RainbowPainter::Palette.new({}), template_path: 'foobar')
+    end
   end
 end

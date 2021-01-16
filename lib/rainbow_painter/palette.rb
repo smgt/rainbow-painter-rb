@@ -1,5 +1,4 @@
 require 'json'
-require 'rhcl'
 
 module RainbowPainter
   # Palette holds a set of colors
@@ -8,9 +7,11 @@ module RainbowPainter
 
     class InvalidType < StandardError; end
 
+    attr_reader :custom
+
     TERMINAL_COLORS = %w[color0 color1 color2 color3 color4 color5 color6
-      color7 color8 color9 color10 color11 color12
-      color13 color14 color15 background foreground cursor].freeze
+                         color7 color8 color9 color10 color11 color12
+                         color13 color14 color15 background foreground cursor].freeze
 
     TERMINAL_COLORS_ALIAS = {
       'color0' => ['black'],
@@ -45,7 +46,7 @@ module RainbowPainter
       end
     end
 
-    def initialize(hash)
+    def initialize(hash) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       TERMINAL_COLORS.each do |key|
         tc = hash.dig('colors', 'terminal', key)
         color = tc.nil? ? RGB.new(r: 0, g: 0, b: 0) : RGB.parse(tc)
@@ -55,14 +56,17 @@ module RainbowPainter
       @name = hash.dig('meta', 'name')
       @url = hash.dig('meta', 'url')
       @custom = {}
-      custom = hash.dig('colors', 'custom')
-      custom.each do |col|
+      cus = hash.dig('colors', 'custom')
+
+      return if cus.nil?
+
+      cus.each do |col|
         c = RGB.parse(col['color'])
         c = c.lighten_by(col['lighten']) if col.include?('lighten')
         c = c.darken_by(col['darken']) if col.include?('darken')
         define_singleton_method(col['name'].to_sym) { @custom[col['name']] }
         @custom[col['name']] = c
-      end unless custom.nil?
+      end
     end
 
     def name
@@ -73,16 +77,13 @@ module RainbowPainter
       @url || ''
     end
 
-    def custom
-      @custom
-    end
-
-    def get_binding
+    def give_binding
       binding
     end
 
     def self.load_path(filepath)
       raise FileNotFound, "File #{filepath} not found" unless File.exist?(filepath)
+
       case File.extname(filepath)
       when '.hcl'
         load_palette(File.read(filepath), Rhcl)
@@ -97,10 +98,10 @@ module RainbowPainter
       begin
         p = klass.parse(string)
       rescue => e
-        puts "ERROR: #{klass.to_s} #{e.message}"
+        puts "ERROR: #{klass} #{e.message}"
         exit 1
       end
-      self.new(p)
+      new(p)
     end
 
     def self.load_palette_json(string)

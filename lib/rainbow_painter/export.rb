@@ -1,15 +1,13 @@
-require 'sys/proctable'
-
 module RainbowPainter
   class Export
-    TEMPLATES=%w[
+    TEMPLATES = %w[
       colors
       colors-kitty.conf
       colors.Xresources
       colors.polybar
       colors-rofi-dark.rasi
       colors-i3.conf
-    ]
+    ].freeze
 
     def initialize(palette:)
       @palette = palette
@@ -17,7 +15,7 @@ module RainbowPainter
 
     def all
       TEMPLATES.each do |path|
-        output = Template.new(palette: @palette, template_path: File.join('templates',path)).render
+        output = Template.new(palette: @palette, template_path: File.join('templates', path)).render
         output_path = File.join(OUTPUT_PATH, path)
         fp = File.open(output_path, 'w')
         fp.write(output)
@@ -41,16 +39,11 @@ module RainbowPainter
     end
 
     def reload_polybar
-      Sys::ProcTable.ps.each do |ps|
-        if ps.cmdline =~ /^polybar/
-          `pkill -USR1 polybar`
-        end
-      end
+      `pkill -USR1 polybar`
     end
 
     def reload_i3
       `i3-msg reload`
     end
-
   end
 end
