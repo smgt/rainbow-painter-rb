@@ -1,0 +1,47 @@
+{
+    "meta": {
+        "name": "Sonokai",
+        "url": "https://github.com/sainnhe/sonokai/"
+    },
+    "colors": {
+        "terminal": {
+            "background": "#2c2e34",
+            "foreground": "#e2e2e3",
+            "cursor": "#a3a3a3",
+            "color0": "#181819",
+            "color1": "#fc5d7c",
+            "color2": "#9ed072",
+            "color3": "#e7c664",
+            "color4": "#76cce0",
+            "color5": "#b39df3",
+            "color6": "#f39660",
+            "color7": "#e2e2e3",
+            "color8": "#181819",
+            "color9": "#fc5d7c",
+            "color10": "#9ed072",
+            "color11": "#e7c664",
+            "color12": "#76cce0",
+            "color13": "#b39df3",
+            "color14": "#f39660",
+            "color15": "#e2e2e3"
+        },
+        "custom": [
+            {
+                "name": "color5_dark",
+                "color": "#b39df3",
+                "darken": 60
+            },
+            {
+                "name": "backgroundalt",
+                "color": "#2c2e34",
+                "lighten": 10
+            },
+            {
+                "name": "foreground_dark",
+                "color": "#e2e2e3",
+                "darken": 30
+            }
+
+        ]
+    }
+}

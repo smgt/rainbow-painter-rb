@@ -1,0 +1,61 @@
+* {
+  background-color: <%= background.hex %>;
+  border-color: <%= backgroundalt.hex %>;
+  text-color: <%= foreground.hex %>;
+  active-color: <%= color5.hex %>;
+  selected-color: <%= color6.hex %>;
+  spacing: 0;
+  width: 512px;
+}
+
+window {
+  height: 425px;
+  border: 4px;
+}
+
+inputbar {
+  border: 0 0 1px 0;
+  children: [prompt,entry];
+}
+
+prompt {
+  padding: 16px;
+  border: 0 1px 0 0;
+}
+
+textbox {
+  background-color: @backgroundcolor;
+  border: 0 0 1px 0;
+  border-color: @border-color;
+  padding: 8px 16px;
+}
+
+entry {
+  padding: 16px;
+}
+
+listview {
+  cycle: false;
+  margin: 0 0 -1px 0;
+  scrollbar: false;
+}
+
+element {
+  border: 0 0 1px 0;
+  padding: 16px;
+}
+
+element-text {
+  highlight: bold <%= color6.hex %>;
+}
+
+element-text selected {
+  highlight: bold;
+}
+
+element selected {
+  background-color: @active-color;
+  text-color: @background-color;
+}
+
+/* vim:ft=css

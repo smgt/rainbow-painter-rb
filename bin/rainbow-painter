@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require "rainbow_painter"
+
+palette = RainbowPainter::Palette.load_path(ARGV[0])
+export = RainbowPainter::Export.new(palette: palette)
+export.all
+export.reload
+
