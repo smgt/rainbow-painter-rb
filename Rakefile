@@ -7,4 +7,11 @@ Rake::TestTask.new(:test) do |t|
   t.test_files = FileList['test/**/*_test.rb']
 end
 
+require 'jsonlint/rake_task'
+JsonLint::RakeTask.new do |t|
+  t.paths = %w[
+    palettes/**/*.json
+  ]
+end
+
 task default: :test

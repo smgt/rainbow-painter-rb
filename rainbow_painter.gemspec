@@ -25,6 +25,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_development_dependency 'bundler', '~> 1.17'
+  spec.add_development_dependency 'jsonlint', '~> 0.3'
   spec.add_development_dependency 'minitest', '~> 5.0'
   spec.add_development_dependency 'minitest-reporters'
   spec.add_development_dependency 'pry'
