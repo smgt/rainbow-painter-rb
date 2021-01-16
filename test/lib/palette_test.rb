@@ -2,7 +2,7 @@ require 'test_helper'
 
 class PaletteTest < Minitest::Test
   def test_load_palette
-    file = '{"color1": "#FF0000", "color2": "rgb(255,0,0)", "color3":"#b39780"}'
+    file = '{"colors":{ "terminal": {"color1": "#FF0000", "color2": "rgb(255,0,0)", "color3":"#b39780"}}}'
     palette = RainbowPainter::Palette.load_palette_json(file)
     assert_equal 1.0, palette.color1.r
     assert_equal 1.0, palette.color2.r

@@ -47,20 +47,22 @@ module RainbowPainter
 
     def initialize(hash)
       TERMINAL_COLORS.each do |key|
-        tc = hash['colors']['terminal']
-        instance_variable_set("@#{key}", RGB.parse(tc[key]))
+        tc = hash.dig('colors', 'terminal', key)
+        color = tc.nil? ? RGB.new(r: 0, g: 0, b: 0) : RGB.parse(tc)
+        instance_variable_set("@#{key}", color)
       end
 
       @name = hash.dig('meta', 'name')
       @url = hash.dig('meta', 'url')
       @custom = {}
-      hash.dig('colors', 'custom').each do |col|
+      custom = hash.dig('colors', 'custom')
+      custom.each do |col|
         c = RGB.parse(col['color'])
         c = c.lighten_by(col['lighten']) if col.include?('lighten')
         c = c.darken_by(col['darken']) if col.include?('darken')
         define_singleton_method(col['name'].to_sym) { @custom[col['name']] }
         @custom[col['name']] = c
-      end
+      end unless custom.nil?
     end
 
     def name
@@ -95,7 +97,7 @@ module RainbowPainter
       begin
         p = klass.parse(string)
       rescue => e
-        puts "ERROR: #{klass.tos} #{e.message}"
+        puts "ERROR: #{klass.to_s} #{e.message}"
         exit 1
       end
       self.new(p)
