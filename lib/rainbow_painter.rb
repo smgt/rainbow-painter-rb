@@ -2,6 +2,7 @@ require 'rainbow_painter/version'
 
 module RainbowPainter
   OUTPUT_PATH = 'tmp/'.freeze
+  # A general rainbow painter error
   class Error < StandardError; end
 end
 

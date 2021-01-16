@@ -2,6 +2,7 @@ module RainbowPainter
   class Export
     TEMPLATES = %w[
       colors
+      colors.sh
       colors-kitty.conf
       colors.Xresources
       colors.polybar
@@ -17,9 +18,9 @@ module RainbowPainter
       TEMPLATES.each do |path|
         output = Template.new(palette: @palette, template_path: File.join('templates', path)).render
         output_path = File.join(OUTPUT_PATH, path)
-        fp = File.open(output_path, 'w')
-        fp.write(output)
-        fp.close
+        File.open(output_path, 'w') do |fp|
+          fp.write(output)
+        end
       end
     end
 
@@ -27,7 +28,7 @@ module RainbowPainter
       reload_kitty
       reload_xrdb
       reload_polybar
-      reload_i3
+      reload_i3wm
     end
 
     def reload_kitty
@@ -42,7 +43,7 @@ module RainbowPainter
       `pkill -USR1 polybar`
     end
 
-    def reload_i3
+    def reload_i3wm
       `i3-msg reload`
     end
   end

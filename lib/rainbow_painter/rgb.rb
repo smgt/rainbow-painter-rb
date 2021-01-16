@@ -1,6 +1,7 @@
 module RainbowPainter
+  # Handles RGB colors
   class RGB # rubocop:disable Metrics/ClassLength
-    attr_accessor :r, :g, :b
+    attr_reader :r, :g, :b
 
     DELTA = 1.0 / 255.0
 
@@ -15,6 +16,42 @@ module RainbowPainter
       (r - other.r).abs +
         (g - other.g).abs +
         (b - other.b).abs < 3.0 * DELTA
+    end
+
+    def red
+      @r
+    end
+
+    def red=(red)
+      self.r = red
+    end
+
+    def r=(red)
+      @r = RGB.normalize(red)
+    end
+
+    def green
+      @g
+    end
+
+    def green=(green)
+      self.g = green
+    end
+
+    def g=(green)
+      @g = RGB.normalize(green)
+    end
+
+    def blue
+      @b
+    end
+
+    def blue=(blue)
+      self.b = blue
+    end
+
+    def b=(blue)
+      @b = RGB.normalize(blue)
     end
 
     def hex
@@ -42,9 +79,11 @@ module RainbowPainter
       opacity /= 100.0
       rgb = dup
 
-      rgb.r = ((@r * opacity) + (mask.r * (1 - opacity))).round(3)
-      rgb.g = ((@g * opacity) + (mask.g * (1 - opacity))).round(3)
-      rgb.b = ((@b * opacity) + (mask.b * (1 - opacity))).round(3)
+      fix_opacity = 1 - opacity
+
+      rgb.r = ((@r * opacity) + (mask.r * fix_opacity)).round(3)
+      rgb.g = ((@g * opacity) + (mask.g * fix_opacity)).round(3)
+      rgb.b = ((@b * opacity) + (mask.b * fix_opacity)).round(3)
 
       rgb
     end
@@ -91,21 +130,22 @@ module RainbowPainter
 
         string.chomp!
         if string[0] == '#'
-          r, g, b = from_hex(string)
-          RGB.new(r: to_fractional(r), g: to_fractional(g), b: to_fractional(b))
+          red, green, blue = from_hex(string)
+          RGB.new(r: to_fractional(red), g: to_fractional(green), b: to_fractional(blue))
         elsif string[0..2] == 'rgb'
-          r, g, b = from_rgb(string)
-          RGB.new(r: r, g: g, b: b)
+          red, green, blue = from_rgb(string)
+          RGB.new(r: red, g: green, b: blue)
         end
       end
 
       def normalize_int(value)
-        if value.to_i.negative?
+        vi = value.to_i
+        if vi.negative?
           0
-        elsif value.to_i > 255
+        elsif vi > 255
           255
         else
-          value.to_i
+          vi
         end
       end
 
@@ -117,9 +157,9 @@ module RainbowPainter
         match = /rgba?\(\s*([.%0-9]*)\s*,\s*([.%0-9]*)\s*,\s*([.%0-9]*)\s*\)/i.match(string)
         return [0, 0, 0] if match.nil?
 
-        r = match[1].nil? ? 0 : rgb_string_to_int(match[1])
-        g = match[2].nil? ? 0 : rgb_string_to_int(match[2])
-        b = match[3].nil? ? 0 : rgb_string_to_int(match[3])
+        r = rgb_string_to_int(match[1])
+        g = rgb_string_to_int(match[2])
+        b = rgb_string_to_int(match[3])
         [r, g, b]
       end
 
@@ -135,23 +175,23 @@ module RainbowPainter
       end
 
       def from_hex(string)
-        h = string.scan(/[0-9a-f]/i)
-        case h.size
+        hex = string.scan(/[0-9a-f]/i)
+        case hex.size
         when 3
-          h.map { |v| (v * 2).to_i(16) }
+          hex.map { |char| (char * 2).to_i(16) }
         when 6
-          h.each_slice(2).map { |v| v.join.to_i(16) }
+          hex.each_slice(2).map { |char| char.join.to_i(16) }
         else
           raise ArgumentError, 'Not a supported HTML colour type.'
         end
       end
 
       def normalize(value)
-        v = value.to_f
+        value = value.to_f
         return 1.0 if value > 1.0
         return 0.0 if value.negative?
 
-        v
+        value
       end
     end
   end

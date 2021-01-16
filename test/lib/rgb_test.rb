@@ -83,4 +83,31 @@ class RgbTest < Minitest::Test
     hsl = RainbowPainter::HSL.new(h: 91, s: 0.67, l: 0.32)
     assert_equal hsl, rgb
   end
+
+  def test_color_aliases_red
+    rgb = RainbowPainter::RGB.new(r: 0.4, g: 0.4, b: 0.4)
+    rgb.red = 0.8
+    assert_equal 0.8, rgb.r
+
+    rgb.r = 0.2
+    assert_equal 0.2, rgb.red
+  end
+
+  def test_color_aliases_green
+    rgb = RainbowPainter::RGB.new(r: 0.4, g: 0.4, b: 0.4)
+    rgb.green = 0.8
+    assert_equal 0.8, rgb.g
+
+    rgb.g = 0.2
+    assert_equal 0.2, rgb.green
+  end
+
+  def test_color_aliases_blue
+    rgb = RainbowPainter::RGB.new(r: 0.4, g: 0.4, b: 0.4)
+    rgb.blue = 0.8
+    assert_equal 0.8, rgb.b
+
+    rgb.b = 0.2
+    assert_equal 0.2, rgb.blue
+  end
 end

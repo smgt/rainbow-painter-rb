@@ -1,13 +1,16 @@
 require 'erb'
 module RainbowPainter
+  # Load and renders a template for a palette
   class Template
     attr_reader :path, :palette
 
+    # When a template isn't present
     class FileNotFound < StandardError; end
 
     def initialize(palette:, template_path:)
       @path = template_path
       @palette = palette
+      @template = nil
       load_path
     end
 

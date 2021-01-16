@@ -27,13 +27,13 @@ module RainbowPainter
     end
 
     def h=(value)
-      v = value.to_i
-      @h = if v > 360
+      value = value.to_i
+      @h = if value > 360
              360
-           elsif v.negative?
+           elsif value.negative?
              0
            else
-             v
+             value
            end
     end
 
@@ -42,11 +42,11 @@ module RainbowPainter
     end
 
     def saturation=(value)
-      @s = normalize(value)
+      self.s = value
     end
 
     def s=(value)
-      @s = normalize(value)
+      @s = HSL.normalize(value)
     end
 
     def luminance
@@ -54,11 +54,11 @@ module RainbowPainter
     end
 
     def luminance=(value)
-      @l = normalize(value)
+      self.l = value
     end
 
     def l=(value)
-      @l = normalize(value)
+      @l = HSL.normalize(value)
     end
 
     def ==(other)
@@ -93,33 +93,35 @@ module RainbowPainter
 
     def lighten_by(value)
       nl = value / 100.0
-      @l = normalize(nl + @l)
+      @l = HSL.normalize(nl + @l)
       self
     end
 
     def darken_by(value)
       nl = value / 100.0
-      @l = normalize(@l - nl)
+      @l = HSL.normalize(@l - nl)
       self
     end
 
     def hue_to_rgb(p, q, t)
       t += 1 if t.negative?
       t -= 1 if t > 1
+      qp = q - p
+      t_max = 2 / 3.0
 
-      return (p + (q - p) * 6 * t) if t < 1 / 6.0
+      return (p + qp * 6 * t) if t < 1 / 6.0
       return q if t < 1 / 2.0
-      return (p + (q - p) * (2 / 3.0 - t) * 6) if t < 2 / 3.0
+      return (p + qp * (t_max - t) * 6) if t < t_max
 
       p
     end
 
-    def normalize(value)
-      v = value.to_f
+    def self.normalize(value)
+      value = value.to_f
       return 1.0 if value > 1.0
       return 0.0 if value.negative?
 
-      v
+      value
     end
   end
 end
