@@ -29,7 +29,7 @@ GEM
       coderay (~> 1.1)
       method_source (~> 1.0)
     rainbow (3.0.0)
-    rake (10.5.0)
+    rake (13.0.3)
     regexp_parser (2.0.3)
     rexml (3.2.4)
     rubocop (1.8.1)
@@ -61,7 +61,7 @@ DEPENDENCIES
   minitest-reporters
   pry
   rainbow_painter!
-  rake (~> 10.0)
+  rake (~> 13.0)
   rubocop (~> 1.8)
   rubocop-minitest (~> 0.10)
   rubocop-performance (~> 1.9)
