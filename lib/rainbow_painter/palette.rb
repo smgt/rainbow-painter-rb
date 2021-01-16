@@ -85,8 +85,6 @@ module RainbowPainter
       raise FileNotFound, "File #{filepath} not found" unless File.exist?(filepath)
 
       case File.extname(filepath)
-      when '.hcl'
-        load_palette(File.read(filepath), Rhcl)
       when '.json'
         load_palette(File.read(filepath), JSON)
       else
@@ -106,10 +104,6 @@ module RainbowPainter
 
     def self.load_palette_json(string)
       load_palette(string, JSON)
-    end
-
-    def self.load_palette_hcl(string)
-      load_palette(string, Rhcl)
     end
   end
 end
