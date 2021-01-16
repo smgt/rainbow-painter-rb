@@ -30,6 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'minitest-reporters'
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'rake', '>= 12.3.3'
+  spec.add_development_dependency 'reek', '~> 6.0'
   spec.add_development_dependency 'rubocop', '~> 1.8'
   spec.add_development_dependency 'rubocop-minitest', '~> 0.10'
   spec.add_development_dependency 'rubocop-performance', '~> 1.9'
