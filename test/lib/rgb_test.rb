@@ -10,6 +10,10 @@ class RgbTest < Minitest::Test
     assert_equal [0, 0, 255], color2
     assert_equal [0, 255, 0], color3
     assert_equal [163, 45, 173], color4
+
+    assert_raises(ArgumentError) do
+      RainbowPainter::RGB.from_hex("notahex")
+    end
   end
 
   def test_parse
