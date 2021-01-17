@@ -68,10 +68,6 @@ module RainbowPainter
     def to_rgb # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       h = @h / 360.0
 
-      r = 0.0
-      g = 0.0
-      b = 0.0
-
       return RGB.new(r: @l.to_f, g: @l.to_f, b: @l.to_f) if s.zero?
 
       q = @l < 0.5 ? @l * (1 + @s) : @l + @s - @l * @s
