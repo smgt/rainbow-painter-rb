@@ -65,7 +65,7 @@ module RainbowPainter
       to_rgb == other
     end
 
-    def to_rgb # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    def to_rgb # rubocop:disable Metrics/AbcSize
       h = @h / 360.0
 
       return RGB.new(r: @l.to_f, g: @l.to_f, b: @l.to_f) if s.zero?
