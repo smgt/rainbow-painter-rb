@@ -2,11 +2,11 @@ require 'test_helper'
 
 class RgbTest < Minitest::Test
   def test_from_hex
-    color = RainbowPainter::RGB.from_hex('#ff0000')
+    color1 = RainbowPainter::RGB.from_hex('#ff0000')
     color2 = RainbowPainter::RGB.from_hex('#00f')
     color3 = RainbowPainter::RGB.from_hex('0f0')
     color4 = RainbowPainter::RGB.from_hex('#a32dad')
-    assert_equal [255, 0, 0], color
+    assert_equal [255, 0, 0], color1
     assert_equal [0, 0, 255], color2
     assert_equal [0, 255, 0], color3
     assert_equal [163, 45, 173], color4
@@ -20,7 +20,6 @@ class RgbTest < Minitest::Test
     assert_equal RainbowPainter::RGB.new(r: 1.0, g: 0.0, b: 0.0), RainbowPainter::RGB.parse('#FF0000')
     assert_equal RainbowPainter::RGB.new(r: 0.0, g: 0.667, b: 0.0), RainbowPainter::RGB.parse('#0A0')
     assert_equal RainbowPainter::RGB.new(r: 0.0, g: 0.667, b: 0.0), RainbowPainter::RGB.parse('rgba(0     ,170,0)')
-    assert_equal RainbowPainter::RGB.new(r: 0.0, g: 0.698, b: 0.0), RainbowPainter::RGB.parse('rgba(0     ,178,0)')
     assert_equal RainbowPainter::RGB.new(r: 0.0, g: 0.0, b: 0.71), RainbowPainter::RGB.parse('rgb(0,0,71%)')
     assert_equal RainbowPainter::RGB.new(r: 1.0, g: 0.66, b: 0.71), RainbowPainter::RGB.parse('rgb(1.0,0.66,71%)')
   end
