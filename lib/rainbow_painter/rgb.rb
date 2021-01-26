@@ -18,6 +18,10 @@ module RainbowPainter
         (b - other.b).abs < 3.0 * DELTA
     end
 
+    def to_s
+      hex
+    end
+
     def red
       @r
     end

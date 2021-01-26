@@ -1,27 +1,38 @@
 module RainbowPainter
   class Export
-    TEMPLATES = %w[
-      colors
-      colors.sh
-      colors-kitty.conf
-      colors.Xresources
-      colors.polybar
-      colors-rofi-dark.rasi
-      colors-i3.conf
-    ].freeze
-
     def initialize(palette:)
       @palette = palette
     end
 
     def all
-      TEMPLATES.each do |path|
-        output = Template.new(palette: @palette, template_path: File.join('templates', path)).render
-        output_path = File.join(OUTPUT_PATH, path)
-        File.open(output_path, 'w') do |fp|
-          fp.write(output)
-        end
+      rendered = []
+      (user_template_paths + template_paths).each do |path|
+        path_basename = File.basename(path)
+        next if rendered.include?(path_basename)
+
+        output = Template.new(palette: @palette, template_path: path).render
+        output_path = File.join(RainbowPainter::CACHE_PATH, path_basename)
+        puts "Exporting #{@palette.name} to #{output_path}"
+        write(output, output_path)
+        rendered << path_basename
       end
+    end
+
+    def write(output, target)
+      fd = IO.sysopen(target, 'w')
+      io = IO.new(fd)
+      io.puts output
+      io.close
+    end
+
+    def user_template_paths
+      path = File.expand_path(File.join(RainbowPainter::OUTPUT_PATH, 'templates'))
+      Dir.glob("#{path}/*")
+    end
+
+    def template_paths
+      path = File.expand_path('templates')
+      Dir.glob("#{path}/*")
     end
 
     def reload
@@ -32,11 +43,11 @@ module RainbowPainter
     end
 
     def reload_kitty
-      `kitty @ set-colors --all tmp/colors-kitty.conf`
+      `kitty @ set-colors --all ~/.cache/rainbow-painter/colors-kitty.conf`
     end
 
     def reload_xrdb
-      `xrdb -merge -quiet tmp/colors.Xresources`
+      `xrdb -merge -quiet ~/.cache/rainbow-painter/colors.Xresources`
     end
 
     def reload_polybar

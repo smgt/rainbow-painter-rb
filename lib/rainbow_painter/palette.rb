@@ -94,12 +94,12 @@ module RainbowPainter
 
     def self.load_palette(string, klass)
       begin
-        p = klass.parse(string)
+        parsed_template = klass.parse(string)
       rescue => e
         puts "ERROR: #{klass} #{e.message}"
         exit 1
       end
-      new(p)
+      new(parsed_template)
     end
 
     def self.load_palette_json(string)
