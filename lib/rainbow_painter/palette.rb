@@ -7,7 +7,7 @@ module RainbowPainter
 
     class InvalidType < StandardError; end
 
-    attr_reader :custom
+    attr_reader :custom, :type
 
     TERMINAL_COLORS = %w[color0 color1 color2 color3 color4 color5 color6
                          color7 color8 color9 color10 color11 color12
@@ -55,6 +55,7 @@ module RainbowPainter
 
       @name = hash.dig('meta', 'name')
       @url = hash.dig('meta', 'url')
+      @type = hash.dig('meta', 'type') || 'dark'
       @custom = {}
       cus = hash.dig('colors', 'custom')
 
@@ -77,8 +78,31 @@ module RainbowPainter
       @url || ''
     end
 
+    def type
+      @type || 'dark'
+    end
+
+    def dark?
+      @type.to_s == 'dark'
+    end
+
+    def light?
+      @type.to_s != 'dark'
+    end
+
     def give_binding
       binding
+    end
+
+    def self.load(palette_basename)
+      user_palette_path = File.join(OUTPUT_PATH, 'palettes', '*')
+      palette_path = File.join(__dir__, '..', '..', 'palettes', '*')
+      (Dir.glob(user_palette_path) + Dir.glob(palette_path)).each do |path|
+        if palette_basename == File.basename(path)
+          puts "LOADING #{path}"
+          return load_path(path)
+        end
+      end
     end
 
     def self.load_path(filepath)

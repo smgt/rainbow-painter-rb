@@ -31,7 +31,8 @@ module RainbowPainter
     end
 
     def template_paths
-      path = File.expand_path('templates')
+      path = File.expand_path(File.join(__dir__, '..', '..', 'templates'))
+      puts path
       Dir.glob("#{path}/*")
     end
 
