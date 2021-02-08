@@ -2,12 +2,12 @@ require 'json'
 
 module RainbowPainter
   # Palette holds a set of colors
-  class Palette
+  class Palette # rubocop:disable Metric/ClassLength
     class FileNotFound < StandardError; end
 
     class InvalidType < StandardError; end
 
-    attr_reader :custom, :type
+    attr_reader :custom
 
     TERMINAL_COLORS = %w[color0 color1 color2 color3 color4 color5 color6
                          color7 color8 color9 color10 color11 color12
@@ -48,7 +48,7 @@ module RainbowPainter
       end
     end
 
-    def initialize(hash) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    def initialize(hash) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
       TERMINAL_COLORS.each do |key|
         tc = hash.dig('colors', 'terminal', key)
         color = tc.nil? ? RGB.new(r: 0, g: 0, b: 0) : RGB.parse(tc)

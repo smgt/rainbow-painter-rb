@@ -1,23 +1,24 @@
 module RainbowPainter
+  # Blends two colors and returns n variants
   class ColorSteps
-    def initialize(color1, color2)
-      @color1 = color1
-      @color2 = color2
+    def initialize(color_from, color_to)
+      @color_from = color_from
+      @color_to = color_to
     end
 
-    def steps(count)
+    def steps(count) # rubocop:disable Metrics/AbcSize
       count.times.to_a.map do |step|
         s = step.to_f + 1.0
         RGB.new(
-          r: delta(@color1.red, @color2.red, count) * s,
-          g: delta(@color1.green, @color2.green, count) * s,
-          b: delta(@color1.blue, @color2.blue, count) * s
+          r: delta(@color_from.red, @color_to.red, count) * s,
+          g: delta(@color_from.green, @color_to.green, count) * s,
+          b: delta(@color_from.blue, @color_to.blue, count) * s
         )
       end
     end
 
-    def delta(channel1, channel2, count)
-      (channel2 - channel1) / (count.to_f + 1.0)
+    def delta(channel_from, channel_to, count)
+      (channel_to - channel_from) / (count.to_f + 1.0)
     end
   end
 end
