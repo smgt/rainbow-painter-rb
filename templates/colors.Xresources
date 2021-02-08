@@ -72,3 +72,15 @@ URxvt*depth: 32
 *.<%= k %>: <%= c.hex %>
 *<%= k %>: <%= c.hex%>
 <% end -%>
+
+! Background/Foreground shades
+*.shade0: <%= shade0.hex %>
+*shade0: <%= shade0.hex %>
+*.shade1: <%= shade1.hex %>
+*shade1: <%= shade1.hex %>
+*.shade2: <%= shade2.hex %>
+*shade2: <%= shade2.hex %>
+*.shade3: <%= shade3.hex %>
+*shade3: <%= shade3.hex %>
+*.shade4: <%= shade4.hex %>
+*shade4: <%= shade4.hex %>

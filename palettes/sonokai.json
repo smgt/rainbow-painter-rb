@@ -24,24 +24,6 @@
             "color13": "#b39df3",
             "color14": "#f39660",
             "color15": "#e2e2e3"
-        },
-        "custom": [
-            {
-                "name": "color5_dark",
-                "color": "#b39df3",
-                "darken": 60
-            },
-            {
-                "name": "backgroundalt",
-                "color": "#2c2e34",
-                "lighten": 10
-            },
-            {
-                "name": "foreground_dark",
-                "color": "#e2e2e3",
-                "darken": 30
-            }
-
-        ]
+        }
     }
 }

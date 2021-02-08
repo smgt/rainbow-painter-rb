@@ -17,8 +17,16 @@ color13 = <%= color13.hex %>
 color14 = <%= color14.hex %>
 color15 = <%= color15.hex %>
 
+color5_dark = <%= color5.darken_by(40).hex %>
+
 <% custom.each do |k, c| -%>
 <%= k %> = <%= c.hex %>
 <% end -%>
+
+shade0 = <%= shade0.hex %>
+shade1 = <%= shade1.hex %>
+shade2 = <%= shade2.hex %>
+shade3 = <%= shade3.hex %>
+shade4 = <%= shade4.hex %>
 
 ; vim:filetype=dosini

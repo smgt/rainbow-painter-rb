@@ -13,6 +13,8 @@ module RainbowPainter
                          color7 color8 color9 color10 color11 color12
                          color13 color14 color15 background foreground cursor].freeze
 
+    SHADE_COLORS = %w[shade0 shade1 shade2 shade3 shade4].freeze
+
     TERMINAL_COLORS_ALIAS = {
       'color0' => ['black'],
       'color8' => ['bright_black'],
@@ -57,6 +59,13 @@ module RainbowPainter
       @url = hash.dig('meta', 'url')
       @type = hash.dig('meta', 'type') || 'dark'
       @custom = {}
+
+      color_steps = ColorSteps.new(background, foreground).steps(SHADE_COLORS.size)
+
+      SHADE_COLORS.each_with_index do |shade, i|
+        define_singleton_method(shade.to_sym) { color_steps[i] }
+      end
+
       cus = hash.dig('colors', 'custom')
 
       return if cus.nil?
@@ -65,8 +74,9 @@ module RainbowPainter
         c = RGB.parse(col['color'])
         c = c.lighten_by(col['lighten']) if col.include?('lighten')
         c = c.darken_by(col['darken']) if col.include?('darken')
-        define_singleton_method(col['name'].to_sym) { @custom[col['name']] }
-        @custom[col['name']] = c
+        color_name = col['name']
+        define_singleton_method(color_name.to_sym) { @custom[color_name] }
+        @custom[color_name] = c
       end
     end
 

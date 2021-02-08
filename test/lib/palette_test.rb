@@ -31,4 +31,23 @@ class PaletteTest < Minitest::Test
     assert_equal '#a4ffff', palette.color14.hex
     assert_equal '#ffffff', palette.color15.hex
   end
+
+  def test_shade_colors 
+    file = '{"colors":{ "terminal": {"background": "#000000", "foreground": "#ffffff", "color3":"#b39780"}}}'
+    palette = RainbowPainter::Palette.load_palette_json(file)
+    assert_equal "#2b2b2b", palette.shade0.hex
+    assert_equal "#d4d4d4", palette.shade4.hex
+  end
+
+  def test_custom_colors
+    skip("not done")
+  end
+
+  def test_custom_color_lighten
+    skip("fix")
+  end
+
+  def test_custom_color_darken
+    skip("fix")
+  end
 end
