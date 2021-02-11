@@ -1,7 +1,7 @@
 {
         "meta": {
                 "name": "OneDark",
-                "url": ""
+                "url": "https://github.com/LalitMaganti/base16-onedark-scheme"
         },
         "colors": {
                 "terminal": {

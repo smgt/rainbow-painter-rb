@@ -1,7 +1,7 @@
 {
     "meta": {
         "name": "Monokai",
-        "url": ""
+        "url": "https://github.com/stephenway/monokai.terminal"
     },
     "colors": {
         "terminal": {
