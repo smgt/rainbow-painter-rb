@@ -2,8 +2,39 @@
 
 require 'bundler/setup'
 require 'rainbow_painter'
+require 'thor'
 
-palette = RainbowPainter::Palette.load(ARGV[0])
-export = RainbowPainter::Export.new(palette: palette)
-export.all
-export.reload
+class PainterCLI < Thor
+  desc 'export PALETTE', 'Export a palette to templates'
+  def export(palette_arg)
+    palette = RainbowPainter::Palette.load(palette_arg)
+    export = RainbowPainter::Export.new(palette: palette)
+    export.all
+    export.reload
+  end
+
+  desc 'preview PALETTE', 'Preview a palettes colors in the terminal'
+  def preview(palette_arg)
+    palette = RainbowPainter::Palette.load(palette_arg)
+    max_length = palette.colors.map(&:size).sort.last
+    puts "\033[4mPalette: \033[1m#{palette.name.ljust(12 + max_length)}\033[0m"
+    palette.colors.each do |key|
+      c = palette.send(key.to_sym)
+      print "#{key.rjust(max_length)} \033[48;2;#{c.red_i};#{c.green_i};#{c.blue_i}m#{' ' * 20}\033[0m\n"
+    end
+  end
+
+  desc 'list', 'List all available palettes'
+  def list
+    puts "\033[4mList of available palettes\033[0m"
+    RainbowPainter::Palette.available_palettes.each do |palette_path|
+      palette = RainbowPainter::Palette.load_path(palette_path)
+      bg_color = palette.background
+      fg_color = palette.foreground
+      puts "#{palette.name} -> \033[38;2;#{fg_color.red_i};#{fg_color.green_i};#{fg_color.blue_i}m\033[48;2;#{bg_color.red_i};#{bg_color.green_i};#{bg_color.blue_i}m#{palette_path}\033[0m"
+    end
+  end
+
+end
+
+PainterCLI.start(ARGV)

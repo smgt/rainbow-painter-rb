@@ -22,6 +22,10 @@ module RainbowPainter
       hex
     end
 
+    def red_i
+      (@r * 255).round
+    end
+
     def red
       @r
     end
@@ -38,6 +42,10 @@ module RainbowPainter
       @g
     end
 
+    def green_i
+      (@g * 255).round
+    end
+
     def green=(green)
       self.g = green
     end
@@ -48,6 +56,10 @@ module RainbowPainter
 
     def blue
       @b
+    end
+
+    def blue_i
+      (@b * 255).round
     end
 
     def blue=(blue)

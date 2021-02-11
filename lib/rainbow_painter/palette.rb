@@ -7,7 +7,7 @@ module RainbowPainter
 
     class InvalidType < StandardError; end
 
-    attr_reader :custom
+    attr_reader :custom, :colors
 
     TERMINAL_COLORS = %w[color0 color1 color2 color3 color4 color5 color6
                          color7 color8 color9 color10 color11 color12
@@ -49,7 +49,9 @@ module RainbowPainter
     end
 
     def initialize(hash) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+      @colors = []
       TERMINAL_COLORS.each do |key|
+        @colors << key
         tc = hash.dig('colors', 'terminal', key)
         color = tc.nil? ? RGB.new(r: 0, g: 0, b: 0) : RGB.parse(tc)
         instance_variable_set("@#{key}", color)
@@ -63,6 +65,7 @@ module RainbowPainter
       color_steps = ColorSteps.new(background, foreground).steps(SHADE_COLORS.size)
 
       SHADE_COLORS.each_with_index do |shade, i|
+        @colors << shade
         define_singleton_method(shade.to_sym) { color_steps[i] }
       end
 
@@ -71,6 +74,7 @@ module RainbowPainter
       return if cus.nil?
 
       cus.each do |col|
+        @colors << col['name']
         c = RGB.parse(col['color'])
         c = c.lighten_by(col['lighten']) if col.include?('lighten')
         c = c.darken_by(col['darken']) if col.include?('darken')
@@ -105,9 +109,7 @@ module RainbowPainter
     end
 
     def self.load(palette_basename)
-      user_palette_path = File.join(OUTPUT_PATH, 'palettes', '*')
-      palette_path = File.join(__dir__, '..', '..', 'palettes', '*')
-      (Dir.glob(user_palette_path) + Dir.glob(palette_path)).each do |path|
+      available_palettes.each do |path|
         if palette_basename == File.basename(path)
           puts "LOADING #{path}"
           return load_path(path)
@@ -138,6 +140,12 @@ module RainbowPainter
 
     def self.load_palette_json(string)
       load_palette(string, JSON)
+    end
+
+    def self.available_palettes
+      user_palette_path = File.join(OUTPUT_PATH, 'palettes', '*')
+      palette_path = File.join(__dir__, '..', '..', 'palettes', '*')
+      Dir.glob(user_palette_path) + Dir.glob(palette_path)
     end
   end
 end
